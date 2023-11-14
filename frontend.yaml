@@ -1,8 +1,0 @@
-steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'europe-west3-docker.pkg.dev/nationle-403218/nationle-frontend/frontend:latest', './frontend/app' ]
-
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', 'europe-west3-docker.pkg.dev/nationle-403218/nationle-frontend/frontend:latest' ]
-images:
-  - 'europe-west3-docker.pkg.dev/nationle-403218/nationle-frontend/frontend:latest'
