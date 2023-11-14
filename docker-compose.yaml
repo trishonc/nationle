@@ -11,10 +11,12 @@ services:
       - FRONTEND_URL=${FRONTEND_URL}
       - SECRET_TOKEN=${SECRET_TOKEN}    
       - DB_URI=${DB_URI}
-      - GOOGLE_APPLICATION_CREDENTIALS=./gcp_credentials.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/key.json
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./gcp-credentials.json:/tmp/keys/key.json:ro
   frontend:
     build:
       context: ./frontend/app
