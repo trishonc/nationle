@@ -11,9 +11,5 @@ tests/
 .idea/
 venv/
 migration/
-start.sh
-alembic/
-alembic.ini
-codes.json
 .pytest_cache
 
