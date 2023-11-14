@@ -14,7 +14,7 @@ jobs:
     - name: Setup GCloud
       uses: google-github-actions/setup-gcloud@v1
       with:
-        service_project_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         project_id: ${{ secrets.PROJECT_ID }}
         export_default_credentials: true
 
@@ -44,14 +44,14 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: |
-          gcloud run deploy [nationle-frontend] \
+          gcloud run deploy nationle-frontend \
             --image ${{ secrets.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY }}/frontend:${{ github.sha }} \
-            --region [REGION] \
+            --region europe-west3 \
             --platform managed \
             --allow-unauthenticated
         
-          gcloud run deploy [nationle-backend] \
+          gcloud run deploy nationle-backend \
             --image ${{ secrets.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY }}/backend:${{ github.sha }} \
-            --region [REGION] \
+            --region europe-west3 \
             --platform managed \
             --allow-unauthenticated 
