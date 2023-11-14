@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ release ]
+
+jobs: 
+  push_to_ecr:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup GCloud
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        service_project_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        project_id: ${{ secrets.PROJECT_ID }}
+        export_default_credentials: true
+
+    - name: Configure Docker
+      run: |-
+        gcloud auth configure-docker --quiet
+
+    - name: Tag and push frontend image to Artifact Registry
+      env:
+        ARTIFACT_REGISTRY: ${{ secrets.REGISTRY }}
+        ARTIFACT_REPOSITORY: ${{ secrets.REPOSITORY }}
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |  
+        docker build -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:$IMAGE_TAG -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:latest ./frontend/app
+        docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/
+
+    - name: Tag and push backend image to Artifact Registry
+      env:
+        ARTIFACT_REGISTRY: ${{ secrets.REGISTRY }}
+        ARTIFACT_REPOSITORY: ${{ secrets.REPOSITORY }}
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |  
+        docker build -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/backend:$IMAGE_TAG -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/backend:latest ./backend
+        docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/
+
+    - name: Deploy to Cloud Run
+      run: |
+          gcloud run deploy [nationle-frontend] \
+            --image ${{ secrets.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY }}/frontend:${{ github.sha }} \
+            --region [REGION] \
+            --platform managed \
+            --allow-unauthenticated
+        
+          gcloud run deploy [nationle-backend] \
+            --image ${{ secrets.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY }}/backend:${{ github.sha }} \
+            --region [REGION] \
+            --platform managed \
+            --allow-unauthenticated 

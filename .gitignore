@@ -1,0 +1,6 @@
+.env
+.DS_Store
+.git
+db_data.sql
+nationle-key.json
+

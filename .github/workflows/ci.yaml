@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request: 
+    branches: [ main ]
+    
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build and start services using Docker Compose
+      run: |
+        docker compose up -d
+      env:
+        FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+        BACKEND_URL: ${{secrets.BACKEND_URL}}
+        SECRET_TOKEN: ${{secrets.SECRET_TOKEN}}
+        DB_URI: ${{ secrets.DB_URI }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+
+    - name: Run Cypress E2E tests
+      run: |
+        cd frontend/app
+        npm ci
+        npx cypress run
+
+    - name: Bring down services
+      run: |
+        docker compose down
