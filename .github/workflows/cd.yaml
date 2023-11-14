@@ -38,7 +38,7 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |  
         docker build -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/backend:$IMAGE_TAG -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/backend:latest ./backend
-        docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/
+        docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY
 
     - name: Deploy to Cloud Run
       run: |
