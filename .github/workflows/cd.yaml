@@ -22,23 +22,19 @@ jobs:
 
     - name: Tag and push frontend image to Artifact Registry
       env:
-        ARTIFACT_REGISTRY: ${{ secrets.REGISTRY }}
         ARTIFACT_REPOSITORY: ${{ secrets.FRONTEND_REPOSITORY }}
-        PROJECT_ID: ${{ secrets.PROJECT_ID }}
         IMAGE_TAG: ${{ github.sha }}
       run: |  
-        docker build -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:$IMAGE_TAG -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:latest ./frontend/app
-        docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY
+        docker build -t $ARTIFACT_REPOSITORY/frontend:$IMAGE_TAG -t $ARTIFACT_REPOSITORY/frontend:latest ./frontend/app
+        docker push -a $ARTIFACT_REPOSITORY
 
     - name: Tag and push backend image to Artifact Registry
       env:
-        ARTIFACT_REGISTRY: ${{ secrets.REGISTRY }}
         ARTIFACT_REPOSITORY: ${{ secrets.BACKEND_REPOSITORY }}
-        PROJECT_ID: ${{ secrets.PROJECT_ID }}
         IMAGE_TAG: ${{ github.sha }}
       run: |  
-        docker build -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/backend:$IMAGE_TAG -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/backend:latest ./backend
-        docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY
+        docker build -t $ARTIFACT_REPOSITORY/backend:$IMAGE_TAG -t $ARTIFACT_REPOSITORY/backend:latest ./backend
+        docker push -a $ARTIFACT_REPOSITORY
 
     - name: Deploy to Cloud Run
       run: |
