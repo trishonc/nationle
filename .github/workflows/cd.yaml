@@ -5,11 +5,11 @@ on:
     branches: [ release ]
 
 jobs: 
-  push_to_ecr:
+  deploy to cloud run:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup GCloud
       uses: google-github-actions/setup-gcloud@v1
@@ -20,7 +20,7 @@ jobs:
 
     - name: Configure Docker
       run: |-
-        gcloud auth configure-docker --quiet
+        gcloud auth configure-docker europe-west3-docker.pkg.dev --quiet
 
     - name: Tag and push frontend image to Artifact Registry
       env:
