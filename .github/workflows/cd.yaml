@@ -27,6 +27,7 @@ jobs:
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
         IMAGE_TAG: ${{ github.sha }}
       run: |  
+        echo "Image name: $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:$IMAGE_TAG"
         docker build -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:$IMAGE_TAG -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:latest ./frontend/app
         docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/
 
