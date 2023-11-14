@@ -39,13 +39,13 @@ jobs:
     - name: Deploy to Cloud Run
       run: |
           gcloud run deploy nationle-frontend \
-            --image ${{ secrets.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY }}/frontend:${{ github.sha }} \
+            --image ${{ secrets.FRONTEND_REPOSITORY }}/frontend:${{ github.sha }} \
             --region europe-west3 \
             --platform managed \
             --allow-unauthenticated
         
           gcloud run deploy nationle-backend \
-            --image ${{ secrets.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY }}/backend:${{ github.sha }} \
+            --image ${{ secrets.BACKEND_REPOSITORY }}/backend:${{ github.sha }} \
             --region europe-west3 \
             --platform managed \
             --allow-unauthenticated 
