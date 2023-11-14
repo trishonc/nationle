@@ -27,9 +27,8 @@ jobs:
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
         IMAGE_TAG: ${{ github.sha }}
       run: |  
-        IMAGE_NAME="europe-west3-docker.pkg.dev/nationle-403218/nationle-frontend/frontend:test-tag"
-        docker build -t $IMAGE_NAME ./frontend/app
-        docker push $IMAGE_NAME
+        docker build -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:$IMAGE_TAG -t $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY/frontend:latest ./frontend/app
+        docker push -a $ARTIFACT_REGISTRY/$PROJECT_ID/$ARTIFACT_REPOSITORY
 
     - name: Tag and push backend image to Artifact Registry
       env:
