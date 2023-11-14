@@ -26,7 +26,7 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |  
         docker build -t $ARTIFACT_REPOSITORY/frontend:$IMAGE_TAG -t $ARTIFACT_REPOSITORY/frontend:latest ./frontend/app
-        docker push -a $ARTIFACT_REPOSITORY
+        docker push -a $ARTIFACT_REPOSITORY/frontend
 
     - name: Tag and push backend image to Artifact Registry
       env:
@@ -34,7 +34,7 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |  
         docker build -t $ARTIFACT_REPOSITORY/backend:$IMAGE_TAG -t $ARTIFACT_REPOSITORY/backend:latest ./backend
-        docker push -a $ARTIFACT_REPOSITORY
+        docker push -a $ARTIFACT_REPOSITORY/backend
 
     - name: Deploy to Cloud Run
       run: |
