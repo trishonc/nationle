@@ -25,7 +25,7 @@ jobs:
     - name: Tag and push frontend image to Artifact Registry
       env:
         ARTIFACT_REGISTRY: ${{ secrets.REGISTRY }}
-        ARTIFACT_REPOSITORY: ${{ secrets.REPOSITORY }}
+        ARTIFACT_REPOSITORY: ${{ secrets.FRONTEND_REPOSITORY }}
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
         IMAGE_TAG: ${{ github.sha }}
       run: |  
@@ -35,7 +35,7 @@ jobs:
     - name: Tag and push backend image to Artifact Registry
       env:
         ARTIFACT_REGISTRY: ${{ secrets.REGISTRY }}
-        ARTIFACT_REPOSITORY: ${{ secrets.REPOSITORY }}
+        ARTIFACT_REPOSITORY: ${{ secrets.BACKEND_REPOSITORY }}
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
         IMAGE_TAG: ${{ github.sha }}
       run: |  

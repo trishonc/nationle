@@ -14,6 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Setup GCP Credentials for Docker
+      run: |
+        echo "${{ secrets.GCP_CREDS }}" | base64 -d > gcp-credentials.json
+
     - name: Build and start services using Docker Compose
       run: |
         docker compose up -d
@@ -25,6 +29,7 @@ jobs:
         POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
 
     - name: Run Cypress E2E tests
       run: |
